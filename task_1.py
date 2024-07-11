@@ -9,21 +9,19 @@ def copy_and_sort_files(src_dir, dest_dir):
             src_path = os.path.join(src_dir, item)
 
             if os.path.isdir(src_path):
-                new_dest_dir = os.path.join(dest_dir, item)
-
-                if not os.path.exists(new_dest_dir):
-                    os.makedirs(new_dest_dir)
-
-                copy_and_sort_files(src_path, new_dest_dir)
+                copy_and_sort_files(src_path, dest_dir)
             elif os.path.isfile(src_path):
                 file_ext = os.path.splitext(item)[1][1:]
-                ext_dir = os.path.join(dest_dir, file_ext)
 
+                if not file_ext:
+                    file_ext = "no_extension"
+
+                ext_dir = os.path.join(dest_dir, file_ext)
                 if not os.path.exists(ext_dir):
                     os.makedirs(ext_dir)
 
-                shutil.copy2(src_path, ext_dir)
-                print(f"Copied {src_path} to {ext_dir}")
+                shutil.copy2(src_path, os.path.join(ext_dir, item))
+                print(f"Copied {src_path} to {os.path.join(ext_dir, item)}")
     except Exception as e:
         print(f"Error: {e}")
 
